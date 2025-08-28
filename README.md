@@ -1,2 +1,1 @@
-# sm
-Slot Machine DNA Compression
+# Slot Machine DNA Compression
