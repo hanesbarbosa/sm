@@ -19,8 +19,9 @@ func substring(c uint8, i int) uint8 {
 	return c >> 6
 }
 
-func transform(c uint8) uint8 {
-	// Only transform secial codes.
+// Transform implements the Slot Machine procedure.
+func Transform(c uint8) uint8 {
+	// Only transform special codes.
 	if isNotSpecialCode(c) {
 		// Instruction.
 		i := substring(c, 0)
@@ -35,4 +36,17 @@ func transform(c uint8) uint8 {
 	} else {
 		return c
 	}
+}
+
+// InverseTransform restores the original value of the byte based on the stored instruction.
+func InverseTransform(c uint8) uint8 {
+	// Only detransform special codes.
+	if isNotSpecialCode(c) {
+		// Instruction.
+		for substring(c, 0) != 0 {
+			c = Transform(c)
+		}
+	}
+	// Return final composite.
+	return c
 }
