@@ -40,7 +40,7 @@ func TestTransform(t *testing.T) {
 	e := []uint8{0b00010011, 0b01101111, 0b10011100, 0b00010011}
 	// Check results.
 	for i := 0; i < len(e)-1; i++ {
-		if c := transform(e[i]); c != e[i+1] {
+		if c := Transform(e[i]); c != e[i+1] {
 			t.Errorf("expected %08b as transformation of %08b but got %08b", e[i+1], e[i], c)
 		}
 	}
@@ -49,7 +49,29 @@ func TestTransform(t *testing.T) {
 	// Special composite.
 	c := uint8(0b11010110)
 	// Check result.
-	if ct := transform(c); ct != c {
+	if ct := Transform(c); ct != c {
 		t.Errorf("transformation of %08b should be %08b", c, ct)
+	}
+}
+
+func TestInverseTransform(t *testing.T) {
+	// Case: complete cycle of detransformations for composites "GTT", "CTA" and "CAT" (original form).
+	// Composites with equivalent instructions.
+	c := []uint8{0b01101111, 0b10011100, 0b00010011}
+	// Expected result is "CAT" (original form).
+	e := uint8(0b00010011)
+	// Check results.
+	for i := 0; i < len(c); i++ {
+		if ct := InverseTransform(c[i]); ct != e {
+			t.Errorf("expected %08b as transformation of %08b but got %08b", e, c[i], ct)
+		}
+	}
+
+	// Case: special code (i.e., leading {11}_{2} instruction) when detransformed should return unaltered.
+	// Special composite.
+	sc := uint8(0b11010110)
+	// Check result.
+	if ct := Transform(sc); ct != sc {
+		t.Errorf("transformation of %08b should be %08b", sc, ct)
 	}
 }
