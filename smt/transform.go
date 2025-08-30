@@ -19,8 +19,7 @@ func substring(c uint8, i int) uint8 {
 	return c >> 6
 }
 
-// Transform implements the Slot Machine procedure.
-func Transform(c uint8) uint8 {
+func transform(c uint8) uint8 {
 	// Only transform special codes.
 	if isNotSpecialCode(c) {
 		// Instruction.
@@ -38,15 +37,26 @@ func Transform(c uint8) uint8 {
 	}
 }
 
-// InverseTransform restores the original value of the byte based on the stored instruction.
-func InverseTransform(c uint8) uint8 {
+func inverseTransform(c uint8) uint8 {
 	// Only detransform special codes.
 	if isNotSpecialCode(c) {
 		// Instruction.
 		for substring(c, 0) != 0 {
-			c = Transform(c)
+			c = transform(c)
 		}
 	}
 	// Return final composite.
 	return c
+}
+
+// Map generates all possible transformations for the given composite.
+// If the composite is a special code, then a set of repeated characters will be given.
+func Map(c uint8) []uint8 {
+	// Output vector with initial state.
+	v := []uint8{c}
+	// Create next 2 transformations based on the initial composite.
+	for i := 0; i < 2; i++ {
+		v = append(v, transform(v[i]))
+	}
+	return v
 }

@@ -40,7 +40,7 @@ func TestTransform(t *testing.T) {
 	e := []uint8{0b00010011, 0b01101111, 0b10011100, 0b00010011}
 	// Check results.
 	for i := 0; i < len(e)-1; i++ {
-		if c := Transform(e[i]); c != e[i+1] {
+		if c := transform(e[i]); c != e[i+1] {
 			t.Errorf("expected %08b as transformation of %08b but got %08b", e[i+1], e[i], c)
 		}
 	}
@@ -49,7 +49,7 @@ func TestTransform(t *testing.T) {
 	// Special composite.
 	c := uint8(0b11010110)
 	// Check result.
-	if ct := Transform(c); ct != c {
+	if ct := transform(c); ct != c {
 		t.Errorf("transformation of %08b should be %08b", c, ct)
 	}
 }
@@ -62,7 +62,7 @@ func TestInverseTransform(t *testing.T) {
 	e := uint8(0b00010011)
 	// Check results.
 	for i := 0; i < len(c); i++ {
-		if ct := InverseTransform(c[i]); ct != e {
+		if ct := inverseTransform(c[i]); ct != e {
 			t.Errorf("expected %08b as transformation of %08b but got %08b", e, c[i], ct)
 		}
 	}
@@ -71,7 +71,29 @@ func TestInverseTransform(t *testing.T) {
 	// Special composite.
 	sc := uint8(0b11010110)
 	// Check result.
-	if ct := Transform(sc); ct != sc {
+	if ct := transform(sc); ct != sc {
 		t.Errorf("transformation of %08b should be %08b", sc, ct)
+	}
+}
+
+func TestMap(t *testing.T) {
+	// Case: map a set of 3 characters into a vector of 3 transforms and 2 special codes.
+	// Composites.
+	c := []uint8{0b00011011, 0b11000111, 0b11010101}
+	// Expected result [[⟨ESC⟩, m, ¶], [Ç], [Õ]].
+	// The first vector is the set of all transformations for 00011011.
+	// The second and third vectors are special codes that will not be transformed.
+	e := [][]uint8{{0b00011011, 0b01101101, 0b10110110},
+		{0b11000111, 0b11000111, 0b11000111},
+		{0b11010101, 0b11010101, 0b11010101}}
+	// Check results.
+	for i := 0; i < len(c); i++ {
+		// For each value in the composite vector there is an expected vector result.
+		v := Map(c[i])
+		for j := 0; j < len(e[i]); j++ {
+			if v[j] != e[i][j] {
+				t.Errorf("expected %08b as a map for value %08b but got %08b", e[i][j], c[i], v[j])
+			}
+		}
 	}
 }
