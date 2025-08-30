@@ -29,8 +29,8 @@ Each resulting composite is based on a piecewise function that analyzes if the g
 
 We know that 6-bit codes only allow us to represent 64 strings, however we need to guarantee that every unique character from Σ is represented, besides the codes for special group of characters (e.g., 2 comment's delimiters). Therefore, the number of special aggregated strings (i.e., 2 or 3 characters not in Λ³) will have 64 - (|Σ| + 2) possible codes. In general, the possible combination of special codes from the alphabet can be described as one of the following possibilities:
 
-1. 3 characters not in Λ³: Ω³, Λ¹Ω², Ω²Λ¹, Λ²Ω¹, Ω¹Λ², Ω¹Λ¹Ω¹, Λ¹Ω¹Λ¹.
-2. 2 characters: Ω², Λ², Λ¹Ω¹, Ω¹Λ¹
-3. 1 character: Ω¹, Λ¹
+1. 3 characters not in Λ³: Ω³, Λ¹Ω², Ω²Λ¹, Λ²Ω¹, Ω¹Λ², Ω¹Λ¹Ω¹, Λ¹Ω¹Λ¹;
+2. 2 characters: Ω², Λ², Λ¹Ω¹, Ω¹Λ¹;
+3. 1 character: Ω¹, Λ¹.
 
 ### Slot Machine
