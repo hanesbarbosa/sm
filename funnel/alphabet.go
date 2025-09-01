@@ -49,7 +49,7 @@ func (a *Alphabet) validate() error {
 
 func (a *Alphabet) validateLambda() error {
 	// Check maximum number of bases.
-	if len(a.lambda) != TotalLambdaAlphabet {
+	if len(a.lambda) != TotalSizeLambdaAlphabet {
 		return ErrorAlphabetLambdaSize
 	}
 	// Should not have omega bases.
@@ -66,7 +66,7 @@ func (a *Alphabet) validateOmega() error {
 		return ErrorAlphabetEmptyOmega
 	}
 	// Check maximum number of bases.
-	if len(a.omega) != TotalOmegaAlphabet {
+	if len(a.omega) > MaximumSizeOmegaAlphabet {
 		return ErrorAlphabetOmegaSize
 	}
 

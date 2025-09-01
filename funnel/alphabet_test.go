@@ -13,7 +13,7 @@ func TestAlphabet(t *testing.T) {
 	_, err := NewAlphabet(l, o)
 	// Check error.
 	if err == nil || err != ErrorAlphabetLambdaSize {
-		t.Errorf("lambda without %d bases should return the \"%s\" error", TotalLambdaAlphabet, ErrorAlphabetLambdaSize.Error())
+		t.Errorf("lambda without %d bases should return the \"%s\" error", TotalSizeLambdaAlphabet, ErrorAlphabetLambdaSize.Error())
 	}
 
 	// Case: empty omega returns an error.
@@ -54,6 +54,6 @@ func TestAlphabet(t *testing.T) {
 	_, err = NewAlphabet(l, o)
 	// Check error.
 	if err == nil || err != ErrorAlphabetOmegaSize {
-		t.Errorf("alphabet with more than %d characters should return the \"%s\" error", TotalAlphabet, ErrorAlphabetOmegaSize.Error())
+		t.Errorf("alphabet with more than %d characters should return the \"%s\" error", TotalSizeAlphabet, ErrorAlphabetOmegaSize.Error())
 	}
 }
