@@ -33,7 +33,7 @@ func NewAlphabet(lambda, omega string) (*Alphabet, error) {
 func (a *Alphabet) validate() error {
 	// Return variable
 	var err error
-	// Validate lambda.
+	// Validate Lambda.
 	err = a.validateLambda()
 	if err != nil {
 		return err
@@ -52,7 +52,7 @@ func (a *Alphabet) validateLambda() error {
 	if len(a.lambda) != TotalSizeLambdaAlphabet {
 		return ErrorAlphabetLambdaSize
 	}
-	// Should not have omega bases.
+	// Should not have Omega bases.
 	if a.haveCommonCharacters() {
 		return ErrorAlphabetCommonCharacter
 	}
@@ -84,4 +84,8 @@ func (a *Alphabet) haveCommonCharacters() bool {
 	}
 
 	return false
+}
+
+func (a *Alphabet) sigma() []byte {
+	return append(a.lambda, a.omega...)
 }
