@@ -31,6 +31,7 @@ func TestGlossary(t *testing.T) {
 	}
 
 	// Case: a new glossary has unique codes for all Λ³ tokens.
+
 	// Case: a new glossary has unique special codes for tokens not in Λ³.
 	// Possible combinations can be:
 	// 1 - 3 characters not in Λ³: Ω³, Λ¹Ω², Ω²Λ¹, Λ²Ω¹, Ω¹Λ², Ω¹Λ¹Ω¹, Λ¹Ω¹Λ¹.

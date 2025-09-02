@@ -15,16 +15,16 @@ type Glossary struct {
 func NewGlossary(a *Alphabet) (*Glossary, error) {
 	// New empty dictionary.
 	g := new(Glossary)
-	// Initiate maps with the size for the whole set of codes (i.e., 2^8 = 256).
-	l := 1 << (BitsPerInstruction + BitsPerCode)
-	g.code = make(map[string]uint8, l)
-	g.token = make(map[uint8]string, l)
+	// Initiate maps with the size for the whole set of codes (i.e., 2^(2+6) = 256).
+	size := 1 << (BitsPerInstruction + BitsPerCode)
+	g.code = make(map[string]uint8, size)
+	g.token = make(map[uint8]string, size)
 	// Store given alphabet.
 	g.alphabet = a
 	// Define remaining number of special codes.
 	g.specialCodeCount = MaximumSizeOmegaAlphabet
-	// Define the next available index for special codes.
-	g.nextSpecialCode = 0b11000000
+	// Define the next available index for special codes (i.e., 0b11000000 = 192).
+	g.nextSpecialCode = uint8(size - (1 << BitsPerCode))
 	// Create all codes for Σ¹.
 	g.setSigmaCodes()
 	// Create all codes for Λ³.
