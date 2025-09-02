@@ -1,4 +1,4 @@
-package funnel
+package smc
 
 import (
 	"strings"
