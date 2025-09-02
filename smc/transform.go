@@ -1,6 +1,4 @@
-package smt
-
-const BASES = 4
+package smc
 
 func isNotSpecialCode(c uint8) bool {
 	// Isolate first bit.

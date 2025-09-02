@@ -1,4 +1,4 @@
-package funnel
+package smc
 
 // Glossary is a structure that holds all the allowed symbols and
 // the mapping between ASCII characters and codes.

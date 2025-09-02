@@ -1,4 +1,4 @@
-package funnel
+package smc
 
 func notEqual(b1, b2 []uint8) bool {
 	// Check size.
