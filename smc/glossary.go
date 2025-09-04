@@ -1,5 +1,7 @@
 package smc
 
+import "bytes"
+
 // Glossary is a structure that holds all the allowed symbols and
 // the mapping between ASCII characters and codes.
 // Tokens will map one or more characters into codes.
@@ -47,4 +49,18 @@ func (g *Glossary) setSigmaCodes() {
 // Code returns the ASCII code for the given string.
 func (g *Glossary) Code(t string) uint8 {
 	return g.code[t]
+}
+
+func (g *Glossary) parse(t string) uint8 {
+	// Get the 4 bases from Lambda.
+	l := g.alphabet.lambda
+	// Find the indexes for each base in the token.
+	b1 := uint8(bytes.IndexByte(l, t[0]))
+	b1 <<= 4
+	b2 := uint8(bytes.IndexByte(l, t[1]))
+	b2 <<= 2
+	b3 := uint8(bytes.IndexByte(l, t[2]))
+	// Build the code wiht the instruction and 3 bases.
+	c := uint8(0)
+	return c ^ b1 ^ b2 ^ b3
 }
