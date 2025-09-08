@@ -73,11 +73,6 @@ func TestTripletsToCode(t *testing.T) {
 	}
 }
 
-func TestCodeToTriplets(t *testing.T) {
-	// Case: codes from 0 to 191 are a result of Lambda combinations of 3 letters.
-	t.Skip()
-}
-
 // TODO:
 
 // Case: a new glossary has unique special codes for tokens not in Λ³.
