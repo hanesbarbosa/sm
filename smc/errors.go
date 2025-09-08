@@ -7,4 +7,5 @@ var (
 	ErrorAlphabetEmptyOmega      = errors.New("omega alphabet is empty")
 	ErrorAlphabetCommonCharacter = errors.New("lambda and omega alphabets cannot have common characters")
 	ErrorAlphabetOmegaSize       = errors.New("omega alphabet exceeds maximum number of characters")
+	ErrorNotATriplet             = errors.New("not a combination of three lambda characters")
 )
