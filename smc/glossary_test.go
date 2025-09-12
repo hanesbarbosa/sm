@@ -29,6 +29,41 @@ func TestNewGlossary(t *testing.T) {
 			t.Errorf("special code for character %d must be equal or higher than %d", c, sc)
 		}
 	}
+
+	// Case: a new glossary has unique codes that are one of the transforms for
+	// original (i.e., triplets with instruction 00) tokens in Λ³.
+	// The index is the original code and the value is the chosen transform.
+	//  1 - a new glossary has codes for tokens in Λ³.
+	//  2 - these codes are unique codes.
+	//  3 - each code is a choice from a valid transform.
+	//  4 - each code below 64 cannot be more than 191 (transforms are from 0 to 191).
+	// These rules will be met if we check the existence of codes only in the
+	// allowed transformations.
+
+	// We iterate over the first 64 values (transforms with instruction 00)
+	// and generate "original triplets" strings such as "AAA", "AAC", "AAG", etc.
+	ot := [TotalTripletsCodes]string{}
+	for v := range TotalTripletsCodes {
+		// Strings.
+		ot[v] = g.codeToTriplets(uint8(v))
+	}
+	// Check if strings return a valid transform.
+	for i := 0; i < len(ot); i++ {
+		// Possible transformations.
+		m := Map(uint8(i))
+		// Iterate over transformations.
+		for j := 0; j < len(m); j++ {
+			if g.code[ot[i]] == m[j] {
+				// Found expected transform.
+				break
+			}
+			// Check for last attempt.
+			if j == len(m)-1 {
+				// Reached the end without finding transform.
+				t.Errorf("no valid transform found for string \"%s\" = %d in %v", ot[i], g.code[ot[i]], m)
+			}
+		}
+	}
 }
 
 func TestTripletsToCode(t *testing.T) {
@@ -71,11 +106,6 @@ func TestTripletsToCode(t *testing.T) {
 			t.Errorf("string \"%s\" with at leas one symbol not in Lambda should return the \"%s\" error", s[i], ErrorNotATriplet.Error())
 		}
 	}
-}
-
-func TestCodeToTriplets(t *testing.T) {
-	// Case: codes from 0 to 191 are a result of Lambda combinations of 3 letters.
-	t.Skip()
 }
 
 // TODO:

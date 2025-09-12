@@ -54,7 +54,7 @@ func TestAlphabet(t *testing.T) {
 	_, err = NewAlphabet(l, o)
 	// Check error.
 	if err == nil || err != ErrorAlphabetOmegaSize {
-		t.Errorf("alphabet with more than %d characters should return the \"%s\" error", TotalSizeAlphabet, ErrorAlphabetOmegaSize.Error())
+		t.Errorf("alphabet with more than %d characters should return the \"%s\" error", TotalSpecialCodes, ErrorAlphabetOmegaSize.Error())
 	}
 
 	// Case: Sigma is comprised by both Lambda and Omega.

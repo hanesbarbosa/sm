@@ -6,8 +6,18 @@ import (
 
 // Glossary is a structure that holds all the allowed symbols and
 // the mapping between ASCII characters and codes.
-// Tokens will map one or more characters into codes.
-// Codes will map integers back into the original characters.
+//
+// Codes will map strings from the input into 8-bit integers.
+// The code mapping carries triplets (i.e., Λ³) and special codes.
+// Special codes can be:
+// 3 characters not in Λ³: Ω³, Λ¹Ω², Ω²Λ¹, Λ²Ω¹, Ω¹Λ², Ω¹Λ¹Ω¹, Λ¹Ω¹Λ¹;
+// 2 characters: Ω², Λ², Λ¹Ω¹, Ω¹Λ¹;
+// 1 character: Ω¹, Λ¹.
+// Triplets only have 64 codes, because only one transformation will be chosen
+// according to the Priority Statistical Model (PSM).
+// Special codes have also 64 codes, because they start on 11000000 = 192 and end in 11111111 = 255.
+//
+// Tokens will map one integer into one or more characters.
 type Glossary struct {
 	alphabet         *Alphabet
 	code             map[string]uint8
@@ -16,11 +26,14 @@ type Glossary struct {
 	nextSpecialCode  uint8 // Next index available.
 }
 
+// NewGlossary creates a new glossary with all allowed symbols and code mapping
+// for strings comprised by letters in the alphabet.
 func NewGlossary(a *Alphabet) (*Glossary, error) {
 	// New empty dictionary.
 	g := new(Glossary)
-	// Initiate maps with the size for the whole set of codes (i.e., 2^(2+6) = 256).
-	size := 1 << (BitsPerInstruction + BitsPerCode)
+	// Maps' size.
+	size := TotalSpecialCodes + TotalTripletsCodes
+	// Initiate maps.
 	g.code = make(map[string]uint8, size)
 	g.token = make(map[uint8]string, size)
 	// Store given alphabet.
@@ -28,8 +41,8 @@ func NewGlossary(a *Alphabet) (*Glossary, error) {
 	// Define remaining number of special codes.
 	g.specialCodeCount = MaximumSizeOmegaAlphabet
 	// Define the next available index for special codes starting at 0b11000000 = 192.
-	g.nextSpecialCode = uint8(size - (1 << BitsPerCode))
-	// Create all codes for Λ³ (i.e., DNA most frequent bases with instructions 00, 01 and 10).
+	g.nextSpecialCode = 192
+	// Create all codes for Λ³ (chosen by the PSM).
 	g.setLambdaCodes()
 	// Create all codes for Σ¹ (i.e., individual characters for final truncation).
 	g.setSigmaCodes()
@@ -50,11 +63,14 @@ func (g *Glossary) setSigmaCodes() {
 }
 
 func (g *Glossary) setLambdaCodes() {
+	// TODO: find a better design to use the PSM.
+	m := NewPSM()
 	// Define all Lambda triplets transforms.
+	// TODO: do we need to generate all transforms at this point? Maybe inside the PSM?
 	tc := tripletsCombination(g)
 	// Generate the code mapping.
-	for i := 0; i < len(tc); i++ {
-		g.code[tc[i]] = uint8(i)
+	for i := 0; i < TotalTripletsCodes; i++ {
+		g.code[tc[i]] = m.code[i]
 	}
 }
 
